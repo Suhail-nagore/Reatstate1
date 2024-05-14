@@ -221,62 +221,60 @@
     </section>
 
     <!-- ***** Blog Start ***** -->
-    <section class="section" id="our-classes">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                    <div class="section-heading">
-                        <h2>Read our <em>Blog</em></h2>
-                        <img src="assets/images/line-dec.png" alt="">
-                        <p>Nunc urna sem, laoreet ut metus id, aliquet consequat magna. Sed viverra ipsum dolor, ultricies fermentum massa consequat eu.</p>
-                    </div>
+    <?php
+include 'db_connection.php';
+
+// Fetch the latest 3 blogs
+$sql = "SELECT blogs.*, COUNT(comments.id) AS comment_count
+        FROM blogs
+        LEFT JOIN comments ON blogs.id = comments.blog_id
+        GROUP BY blogs.id
+        ORDER BY blogs.published_at DESC
+        LIMIT 3";
+$stmt = $pdo->query($sql);
+$blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+<section class="section" id="our-classes" <?php if (count($blogs) === 0) echo 'style="display:none;"'; ?>>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading">
+                    <h2>Read our <em>Blog</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Nunc urna sem, laoreet ut metus id, aliquet consequat magna. Sed viverra ipsum dolor, ultricies fermentum massa consequat eu.</p>
                 </div>
             </div>
-            <div class="row" id="tabs">
-              <div class="col-lg-4">
+        </div>
+        <div class="row" id="tabs">
+            <div class="col-lg-4">
                 <ul>
-                  <li><a href='#tabs-1'>Lorem ipsum dolor sit amet, consectetur adipisicing.</a></li>
-                  <li><a href='#tabs-2'>Aspernatur excepturi magni, placeat rerum nobis magnam libero! Soluta.</a></li>
-                  <li><a href='#tabs-3'>Sunt hic recusandae vitae explicabo quidem laudantium corrupti non adipisci nihil.</a></li>
-                  <div class="main-rounded-button"><a href="blog.html">Read More</a></div>
+                    <?php foreach ($blogs as $index => $blog): ?>
+                        <li><a href='#tabs-<?php echo $index + 1; ?>'><?php echo htmlspecialchars($blog['title']); ?></a></li>
+                    <?php endforeach; ?>
+                    <div class="main-rounded-button"><a href="blog.html">Read More</a></div>
                 </ul>
-              </div>
-              <div class="col-lg-8">
+            </div>
+            <div class="col-lg-8">
                 <section class='tabs-content'>
-                  <article id='tabs-1'>
-                    <img src="assets/images/blog-image-1-940x460.jpg" alt="">
-                    <h4>Lorem ipsum dolor sit amet, consectetur adipisicing.</h4>
-
-                    <p><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10 &nbsp;|&nbsp; <i class="fa fa-comments"></i>  15 comments</p>
-
-                    <p>Phasellus convallis mauris sed elementum vulputate. Donec posuere leo sed dui eleifend hendrerit. Sed suscipit suscipit erat, sed vehicula ligula. Aliquam ut sem fermentum sem tincidunt lacinia gravida aliquam nunc. Morbi quis erat imperdiet, molestie nunc ut, accumsan diam.</p>
-                    <div class="main-button">
-                        <a href="blog-details.html">Continue Reading</a>
-                    </div>
-                  </article>
-                  <article id='tabs-2'>
-                    <img src="assets/images/blog-image-2-940x460.jpg" alt="">
-                    <h4>Aspernatur excepturi magni, placeat rerum nobis magnam libero! Soluta.</h4>
-                    <p><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10 &nbsp;|&nbsp; <i class="fa fa-comments"></i>  15 comments</p>
-                    <p>Integer dapibus, est vel dapibus mattis, sem mauris luctus leo, ac pulvinar quam tortor a velit. Praesent ultrices erat ante, in ultricies augue ultricies faucibus. Nam tellus nibh, ullamcorper at mattis non, rhoncus sed massa. Cras quis pulvinar eros. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                    <div class="main-button">
-                        <a href="blog-details.html">Continue Reading</a>
-                    </div>
-                  </article>
-                  <article id='tabs-3'>
-                    <img src="assets/images/blog-image-3-940x460.jpg" alt="">
-                    <h4>Sunt hic recusandae vitae explicabo quidem laudantium corrupti non adipisci nihil.</h4>
-                    <p><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10 &nbsp;|&nbsp; <i class="fa fa-comments"></i>  15 comments</p>
-                    <p>Fusce laoreet malesuada rhoncus. Donec ultricies diam tortor, id auctor neque posuere sit amet. Aliquam pharetra, augue vel cursus porta, nisi tortor vulputate sapien, id scelerisque felis magna id felis. Proin neque metus, pellentesque pharetra semper vel, accumsan a neque.</p>
-                    <div class="main-button">
-                        <a href="blog-details.html">Continue Reading</a>
-                    </div>
-                  </article>
+                    <?php foreach ($blogs as $index => $blog): ?>
+                        <article id='tabs-<?php echo $index + 1; ?>'>
+                            <img src="<?php echo htmlspecialchars($blog['image_path']); ?>" alt="" style="width:100%;">
+                            <h4><?php echo htmlspecialchars($blog['title']); ?></h4>
+                            <p><i class="fa fa-user"></i> Admin &nbsp;|&nbsp; <i class="fa fa-calendar"></i> <?php echo date('d.m.Y H:i', strtotime($blog['published_at'])); ?> &nbsp;|&nbsp; <i class="fa fa-comments"></i> <?php echo $blog['comment_count']; ?> comments</p>
+                            <p class="truncate-text"><?php echo htmlspecialchars($blog['paragraph1']); ?></p>
+                            <div class="main-button">
+                                <a href="blog-details.php?id=<?php echo $blog['id']; ?>">Continue Reading</a>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
                 </section>
-              </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     <!-- ***** Blog End ***** -->
 
     <!-- ***** Call to Action Start ***** -->
@@ -422,6 +420,29 @@
         });
     });
 </script>
+
+<script>
+    // Function to truncate text
+    function truncateText() {
+        var maxLength = 300; // Maximum length of text
+        var elements = document.querySelectorAll('.truncate-text'); // Select all elements to truncate
+
+        elements.forEach(function (element) {
+            var text = element.textContent.trim(); // Get the text content
+            if (text.length > maxLength) {
+                // Truncate text if it exceeds the maximum length
+                var truncatedText = text.substr(0, maxLength);
+                truncatedText = truncatedText.substr(0, Math.min(truncatedText.length, truncatedText.lastIndexOf(" "))); // Ensure text ends at a space
+                truncatedText += '...'; // Add ellipsis
+                element.textContent = truncatedText; // Set truncated text
+            }
+        });
+    }
+
+    // Call truncateText function when the page loads
+    window.onload = truncateText;
+</script>
+
 
   </body>
 </html>

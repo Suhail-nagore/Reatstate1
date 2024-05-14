@@ -24,7 +24,9 @@ if(!isset($_SESSION['username'])) {
                     </div>
                     <div class="card-body">
                         <div class="text-center mb-3">
-                            <a href="manage-properties.php" class="btn btn-primary">Manage Properties</a>
+                            <a href="manage-properties.php" class="btn btn-primary mb-3">Manage Properties</a> <br>
+                            <a href="manage-blogs.php" class="btn btn-primary mb-3">Manage Blogs</a> <br>
+                            <a href="index.php" class="btn btn-danger mb-3">Homepage</a>
                         </div>
                     </div>
                 </div>
