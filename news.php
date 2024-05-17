@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/news.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
@@ -39,6 +40,9 @@
 
         .down-content h4 {
             margin-top: 0;
+        }
+        .news-card{
+            height:300px
         }
     </style>
 </head>
@@ -92,8 +96,8 @@
                     <div class="cta-content">
                         <br>
                         <br>
-                        <h2>Our <em>Properties</em></h2>
-                        <p>Ut consectetur, metus sit amet aliquet placerat, enim est ultricies ligula</p>
+                        <h2>Latest <em>NEWS</em></h2>
+                        <p>This is the place where you stay updated with all Real Estate News of Gurgaon</p>
                     </div>
                 </div>
             </div>
@@ -108,112 +112,50 @@
             <br>
 
             <!-- Dropdown for property type filter -->
-            <div class="row mb-3">
-                <div class="col-lg-4 offset-lg-4">
-                    <form action="properties.php" method="get" id="filterForm">
-                        <div class="input-group">
-                            <select class="form-control" name="type" id="type">
-                                <option value="all" <?php if(isset($_GET['type']) && $_GET['type'] == 'all') echo 'selected'; ?>>All</option>
-                                <option value="Residential" <?php if(isset($_GET['type']) && $_GET['type'] == 'Residential') echo 'selected'; ?>>Residential</option>
-                                <option value="Commercial" <?php if(isset($_GET['type']) && $_GET['type'] == 'Commercial') echo 'selected'; ?>>Commercial</option>
-                                <option value="Industrial" <?php if(isset($_GET['type']) && $_GET['type'] == 'Industrial') echo 'selected'; ?>>Industrial</option>
-                                <option value="Agricultural" <?php if(isset($_GET['type']) && $_GET['type'] == 'Agricultural') echo 'selected'; ?>>Agricultural</option>
-                            </select>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Filter Results</button>
+            <?php
+            include 'db_connection.php';
+
+            // Fetch the latest 8 news articles
+            $sql = "SELECT * FROM news ORDER BY created_at DESC";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            ?>
+
+            <section class="section mt-5 mb-5" id="news">
+                <h4 class="text-center">Latest News</h4>
+                <div class="container">
+                    <br>
+                    <br>
+                    <?php foreach ($news as $item): ?>
+                    <div class="news-card shadow mt-2 mb-2">
+                        <div class="row">
+
+                        
+                            <div class="news-image col-lg-4 col-md-4 col-sm-6">
+                                <img src="<?php echo htmlspecialchars($item['image_path']); ?>" alt="News Image">
                             </div>
-                        </div>
-                    </form>
+                            <div class="news-content col-lg-8 col-md-8 col-sm-6">
+                            <a href="news-details.php?id=<?php echo htmlspecialchars($item['id']); ?>"><h2 class="news-title"><?php echo htmlspecialchars($item['title']); ?></h2></a>
+                                
+                                <p class="news-date"><strong><time><?php echo htmlspecialchars($item['created_at']); ?></time></strong></p>
+                                <p class="news-description"><time><?php echo htmlspecialchars($item['paragraph1']); ?></time></p>
+                                <a href="news-details.php?id=<?php echo htmlspecialchars($item['id']); ?>" class="btn btn-primary">Read More</a>
+                            </div>
+                            </div>
+                    </div>
+                    <?php endforeach; ?>
+                    
+
                 </div>
-            </div>
-
-            <div class="row" id="propertyContainer">
-                <?php
-                // Include database connection
-                include 'db_connection.php';
-
-                try {
-                    $typeFilter = isset($_GET['type']) ? $_GET['type'] : 'all';
-                    $limit = 12;
-                    $offset = 0;
-
-                    // Count total properties based on filter
-                    $countSql = "SELECT COUNT(*) AS total FROM properties";
-                    if ($typeFilter != 'all') {
-                        $countSql .= " WHERE type = :type";
-                    }
-                    $countStmt = $pdo->prepare($countSql);
-                    if ($typeFilter != 'all') {
-                        $countStmt->execute(['type' => $typeFilter]);
-                    } else {
-                        $countStmt->execute();
-                    }
-                    $totalProperties = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-                    // Fetch properties based on filter
-                    $sql = "SELECT p.id, p.name, MIN(pi.image_path) AS image_path 
-                            FROM properties p
-                            LEFT JOIN property_images pi ON p.id = pi.property_id";
-                    if ($typeFilter != 'all') {
-                        $sql .= " WHERE p.type = :type";
-                    }
-                    $sql .= " GROUP BY p.id
-                              LIMIT :limit OFFSET :offset";
-
-                    $stmt = $pdo->prepare($sql);
-                    if ($typeFilter != 'all') {
-                        $stmt->bindParam(':type', $typeFilter, PDO::PARAM_STR);
-                    }
-                    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-                    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-                    $stmt->execute();
-
-                    // Check if properties exist
-                    if ($stmt->rowCount() > 0) {
-                        // Output data of each row
-                        foreach ($stmt as $row) {
-                            echo "<div class='col-lg-4'>";
-                            echo "<div class='trainer-item'>";
-                            echo "<div class='image-thumb'>";
-                            if (!empty($row['image_path'])) {
-                                echo "<img src='" . $row['image_path'] . "' alt='Property Image'>";
-                            } else {
-                                echo "<img src='default_image.jpg' alt='Property Image'>";
-                            }
-                            echo "</div>";
-                            echo "<div class='down-content'>";
-                            echo "<span>";
-                            echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
-                            echo "</span>";
-                            echo "<h4>" . $row['name'] . "</h4>";
-                            echo "<p>House &nbsp;/&nbsp; For Sale &nbsp;/&nbsp; 100 sq m &nbsp;/&nbsp; 2010</p>";
-                            echo "<ul class='social-icons'>";
-                            echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
-                            echo "</ul>";
-                            echo "</div>";
-                            echo "</div>";
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "<div class='col-lg-12'>";
-                        echo "<p>No properties found.</p>";
-                        echo "</div>";
-                    }
-                } catch (PDOException $e) {
-                    echo "Error: " . $e->getMessage();
-                }
-                ?>
-            </div>
+            </section>
 
             <br>
 
             <!-- Load More Button -->
-            <?php if ($totalProperties > 12): ?>
                 <div class="text-center">
                     <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
                 </div>
-            <?php endif; ?>
-
         </div>
     </section>
     <!-- ***** Fleet Ends ***** -->
@@ -269,6 +211,27 @@
         });
     });
     </script>
+    <script>
+    // Function to truncate text
+    function truncate() {
+        var maxLength = 300; // Maximum length of text
+        var elements = document.querySelectorAll('.news-description'); // Select all elements to truncate
+
+        elements.forEach(function (element) {
+            var text = element.textContent.trim(); // Get the text content
+            if (text.length > maxLength) {
+                // Truncate text if it exceeds the maximum length
+                var truncatedText = text.substr(0, maxLength);
+                truncatedText = truncatedText.substr(0, Math.min(truncatedText.length, truncatedText.lastIndexOf(" "))); // Ensure text ends at a space
+                truncatedText += '...'; // Add ellipsis
+                element.textContent = truncatedText; // Set truncated text
+            }
+        });
+    }
+
+    // Call truncateText function when the page loads
+    window.onload = truncate;
+</script>
 </body>
 
 </html>

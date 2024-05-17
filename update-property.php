@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $longitude = $_POST['longitude'];
     $specifications = $_POST['specifications'];
     $amenities = $_POST['amenities'];
+    $type = $_POST['type']; // Get the type of property
 
     // Update property details
     $updateSql = "UPDATE properties SET ";
@@ -39,6 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($longitude)) {
         $updateSql .= "longitude = ?, ";
         $updateParams[] = $longitude;
+    }
+
+    // Update type
+    if (!empty($type)) {
+        $updateSql .= "type = ?, ";
+        $updateParams[] = $type;
     }
 
     // Remove trailing comma and space

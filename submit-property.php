@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $longitude = $_POST['longitude'];
     $specifications = $_POST['specifications'];
     $amenities = $_POST['amenities'];
+    $type = $_POST['type'];
 
     // File upload handling for three images
     $targetDir = "uploads/";
@@ -24,9 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
 
         // Insert property details into properties table
-        $sql = "INSERT INTO properties (name, description, latitude, longitude) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO properties (name, description, latitude, longitude, type) VALUES (?, ?, ?, ?,?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$name, $description, $latitude, $longitude]);
+        $stmt->execute([$name, $description, $latitude, $longitude, $type]);
         $propertyId = $pdo->lastInsertId();
 
         // Insert property specifications into property_specifications table

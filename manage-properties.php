@@ -20,6 +20,7 @@
 
     <!-- Button to Add New Property -->
     <a href="add-property.php" class="btn btn-primary mb-3">Add New Property</a>
+    <a href="dashboard.php" class="btn btn-primary mb-3">Dashboard</a>
 
     <!-- Display Existing Properties -->
     <div class="table-responsive">

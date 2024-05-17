@@ -1,0 +1,139 @@
+.news-card {
+    display: flex;
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 5px;
+    padding: 10px;
+    
+}
+
+
+.news-image {
+    flex: 1;
+    overflow: hidden;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    min-width: 100px;
+    object-fit: cover;
+}
+
+.news-content {
+    flex: 2;
+    padding: 10px;
+}
+
+.news-title {
+    margin-top: 0;
+}
+
+.news-description {
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 16px !important;
+    }
+    .news-date{
+        font-size: 14px;
+    }
+    .news-description{
+        display: none;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 16px !important;
+    }
+    .news-date{
+        font-size: 14px;
+    }
+    .news-description{
+        display: none;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 20px !important;
+    }
+    .news-date{
+        font-size: 16px;
+    }
+    .news-image img {
+        max-height: 150px !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 24px !important;
+    }
+    .news-date{
+        font-size: 16px;
+    }
+    .news-card{
+        height: 180px;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 28px !important;
+    }
+    .news-date{
+        font-size: 16px;
+    }
+    .news-card{
+        height: 200px;
+    }
+}
+
+/* Extra extra large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    /* Your styles here */
+    .news-title{
+        font-size: 30px !important;
+    }
+    .news-date{
+        font-size: 16px;
+    }
+    .news-card{
+        height: 200px;
+    }
+}

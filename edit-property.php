@@ -18,6 +18,7 @@ if (isset($_GET['id'])) {
         $description = $property['description'];
         $latitude = $property['latitude'];
         $longitude = $property['longitude'];
+        $type = $property['type']; // Fetch the property type
 
         // Fetch specifications for the property
         $sql = "SELECT specification FROM property_specifications WHERE property_id = :property_id";
@@ -47,6 +48,8 @@ if (isset($_GET['id'])) {
     exit;
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,34 +74,43 @@ if (isset($_GET['id'])) {
     <form action="update-property.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Property Name:</label>
-            <input type="text" class="form-control" id="name" name="name" value="<?php echo isset($name) ? $name : ''; ?>" required>
+            <input type="text" class="form-control" id="name" name="name" value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>" required>
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" rows="5" required><?php echo isset($description) ? $description : ''; ?></textarea>
+            <textarea class="form-control" id="description" name="description" rows="5" required><?php echo isset($description) ? htmlspecialchars($description) : ''; ?></textarea>
         </div>
         <div class="form-group">
             <label for="latitude">Latitude:</label>
-            <input type="text" class="form-control" id="latitude" name="latitude" value="<?php echo isset($latitude) ? $latitude : ''; ?>" required>
+            <input type="text" class="form-control" id="latitude" name="latitude" value="<?php echo isset($latitude) ? htmlspecialchars($latitude) : ''; ?>" required>
         </div>
         <div class="form-group">
             <label for="longitude">Longitude:</label>
-            <input type="text" class="form-control" id="longitude" name="longitude" value="<?php echo isset($longitude) ? $longitude : ''; ?>" required>
+            <input type="text" class="form-control" id="longitude" name="longitude" value="<?php echo isset($longitude) ? htmlspecialchars($longitude) : ''; ?>" required>
         </div>
         <div class="form-group">
             <label for="specifications">Specifications:</label>
-            <textarea class="form-control" id="specifications" name="specifications" rows="3" required><?php echo isset($specifications) ? implode(',', $specifications) : ''; ?></textarea>
+            <textarea class="form-control" id="specifications" name="specifications" rows="3" required><?php echo isset($specifications) ? htmlspecialchars(implode(',', $specifications)) : ''; ?></textarea>
             <small class="form-text text-muted">Enter specifications separated by commas (e.g., Size, Bedrooms, Bathrooms).</small>
         </div>
         <div class="form-group">
             <label for="amenities">Amenities:</label>
-            <textarea class="form-control" id="amenities" name="amenities" rows="3" required><?php echo isset($amenities) ? implode(',', $amenities) : ''; ?></textarea>
+            <textarea class="form-control" id="amenities" name="amenities" rows="3" required><?php echo isset($amenities) ? htmlspecialchars(implode(',', $amenities)) : ''; ?></textarea>
             <small class="form-text text-muted">Enter amenities separated by commas (e.g., Pool, Gym, Parking).</small>
+        </div>
+        <div class="form-group">
+            <label for="type">Type of Property:</label>
+            <select class="form-control" id="type" name="type" required>
+                <option value="Residential" <?php echo isset($type) && $type == 'Residential' ? 'selected' : ''; ?>>Residential</option>
+                <option value="Commercial" <?php echo isset($type) && $type == 'Commercial' ? 'selected' : ''; ?>>Commercial</option>
+                <option value="Industrial" <?php echo isset($type) && $type == 'Industrial' ? 'selected' : ''; ?>>Industrial</option>
+                <option value="Agriculture" <?php echo isset($type) && $type == 'Agriculture' ? 'selected' : ''; ?>>Agriculture</option>
+            </select>
         </div>
         <!-- Display existing images -->
         <?php foreach ($images as $image) : ?>
             <div class="form-group">
-                <img src="<?php echo $image; ?>" alt="Property Image" class="img-thumbnail">
+                <img src="<?php echo htmlspecialchars($image); ?>" alt="Property Image" class="img-thumbnail">
             </div>
         <?php endforeach; ?>
         <!-- Allow to upload new images -->
@@ -115,7 +127,7 @@ if (isset($_GET['id'])) {
             <input type="file" class="form-control-file" id="image3" name="image3" accept="image/*">
         </div>
         <!-- Hidden input field for property_id -->
-        <input type="hidden" name="property_id" value="<?php echo isset($propertyId) ? $propertyId : ''; ?>">
+        <input type="hidden" name="property_id" value="<?php echo isset($propertyId) ? htmlspecialchars($propertyId) : ''; ?>">
 
         <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>

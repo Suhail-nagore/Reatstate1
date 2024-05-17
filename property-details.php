@@ -108,7 +108,7 @@ if (isset($_GET['id'])) {
                           <li><a href="index.php">Home</a></li>
                           <li><a href="properties.php" class="active">Properties</a></li>
                           <li><a href="about.html">About</a></li>
-                          <li><a href="blog.html">Blogs</a></li>
+                          <li><a href="blog.php">Blogs</a></li>
                           
                           <li><a href="contact.html" style="color: white;">Contact</a></li> 
                       </ul>        

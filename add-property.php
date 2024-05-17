@@ -29,6 +29,15 @@
             <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
         </div>
         <div class="form-group">
+            <label for="type">Type:</label>
+            <select class="form-control" id="type" name="type" required>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Agriculture">Agriculture</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="latitude">Latitude:</label>
             <input type="text" class="form-control" id="latitude" name="latitude" required>
         </div>

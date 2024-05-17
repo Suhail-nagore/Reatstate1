@@ -24,6 +24,9 @@
     
     <!-- jQuery (required for Bootstrap JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <link rel="stylesheet" href="assets/css/news.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
 
@@ -86,7 +89,7 @@
                         <li><a href="index.php" class="active">Home</a></li>
                         <li><a href="properties.php">Properties</a></li>
                         <li><a href="about.html">About</a></li>
-                        <li><a href="blog.html">Blogs</a></li>
+                        <li><a href="blog.php">Blogs</a></li>
                         
                         <li><a href="contact.html" style="color: white;">Contact</a></li> 
                     </ul>        
@@ -123,8 +126,55 @@
     </div>
     <!-- ***** Main Banner Area End ***** -->
 
+
+    <?php
+    include 'db_connection.php';
+
+    // Fetch the latest 8 news articles
+    $sql = "SELECT * FROM news ORDER BY created_at DESC LIMIT 8";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+
+    <section class="section mt-5 mb-5" id="news">
+        <h4 class="text-center">Latest News</h4>
+        <div class="container">
+            <br>
+            <br>
+            <div class="news-slider card">
+            <?php foreach ($news as $item): ?>
+            <div class="news-card shadow">
+                <div class="row">
+
+                
+                    <div class="news-image col-lg-4 col-md-4 col-sm-6">
+                        <img src="<?php echo htmlspecialchars($item['image_path']); ?>" alt="News Image">
+                    </div>
+                    <div class="news-content col-lg-8 col-md-8 col-sm-6">
+                    <a href="news-details.php?id=<?php echo htmlspecialchars($item['id']); ?>"><h2 class="news-title"><?php echo htmlspecialchars($item['title']); ?></h2></a>
+                        
+                        <p class="news-date"><strong><time><?php echo htmlspecialchars($item['created_at']); ?></time></strong></p>
+                        <p class="news-description"><time><?php echo htmlspecialchars($item['paragraph1']); ?></time></p>
+                        
+                    </div>
+                    </div>
+            </div>
+            <?php endforeach; ?>
+            </div>
+            
+
+        </div>
+        <div class="text-center mt-5">
+
+                <a href="news.php" class="btn btn-primary mt-10">See All</a>
+            </div>
+
+    </section>
+
    <!-- ***** Cars Starts ***** -->
-   <section class="section" id="trainers">
+   <section class="section mt-5 mb-5" id="trainers">
+    <h4 class="text-center">Upcoming Projects in Gurgaon</h4>
     <div class="container">
         <br>
         <br>
@@ -136,9 +186,13 @@
 
             try {
                 // Fetch properties in batches of 3
+                $countSql = "SELECT COUNT(*) AS total FROM properties";
+                $countStmt = $pdo->prepare($countSql);
+                $countStmt->execute();
+                $totalProperties = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
                 $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
-                $limit = 3;
-                $sql = "SELECT p.id, p.name, MIN(pi.image_path) AS image_path 
+                $limit = 6;
+                $sql = "SELECT p.id, p.name, p.type, MIN(pi.image_path) AS image_path 
                         FROM properties p
                         LEFT JOIN property_images pi ON p.id = pi.property_id
                         GROUP BY p.id
@@ -165,7 +219,7 @@
                         echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
                         echo "</span>";
                         echo "<h4>" . $row['name'] . "</h4>";
-                        echo "<p>House &nbsp;/&nbsp; For Sale &nbsp;/&nbsp; 100 sq m &nbsp;/&nbsp; 2010</p>";
+                        echo "<p>" . $row['type'] . " &nbsp;/&nbsp; Latest &nbsp;/&nbsp;</p>";
                         echo "<ul class='social-icons'>";
                         echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
                         echo "</ul>";
@@ -189,9 +243,12 @@
         <br>
 
         <!-- Load More Button -->
+        <?php if ($totalProperties > 6): ?>
         <div class="text-center">
-            <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
+
+        <a href="properties.php" class="btn btn-primary">Load More</a>
         </div>
+        <?php endif; ?>
 
     </div>
 </section>
@@ -253,7 +310,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($blogs as $index => $blog): ?>
                         <li><a href='#tabs-<?php echo $index + 1; ?>'><?php echo htmlspecialchars($blog['title']); ?></a></li>
                     <?php endforeach; ?>
-                    <div class="main-rounded-button"><a href="blog.html">Read More</a></div>
+                    <div class="main-rounded-button"><a href="blog.php">Read More</a></div>
                 </ul>
             </div>
             <div class="col-lg-8">
@@ -390,9 +447,38 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="assets/js/imgfix.min.js"></script> 
     <script src="assets/js/mixitup.js"></script> 
     <script src="assets/js/accordions.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
+    <script>
+            $(document).ready(function(){
+                $('.news-slider').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 1000,
+                    arrows: false,
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1
+                            }
+                        }
+                    ]
+                });
+            });
+</script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -441,6 +527,28 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Call truncateText function when the page loads
     window.onload = truncateText;
+</script>
+
+<script>
+    // Function to truncate text
+    function truncate() {
+        var maxLength = 200; // Maximum length of text
+        var elements = document.querySelectorAll('.news-description'); // Select all elements to truncate
+
+        elements.forEach(function (element) {
+            var text = element.textContent.trim(); // Get the text content
+            if (text.length > maxLength) {
+                // Truncate text if it exceeds the maximum length
+                var truncatedText = text.substr(0, maxLength);
+                truncatedText = truncatedText.substr(0, Math.min(truncatedText.length, truncatedText.lastIndexOf(" "))); // Ensure text ends at a space
+                truncatedText += '...'; // Add ellipsis
+                element.textContent = truncatedText; // Set truncated text
+            }
+        });
+    }
+
+    // Call truncateText function when the page loads
+    window.onload = truncate;
 </script>
 
 
