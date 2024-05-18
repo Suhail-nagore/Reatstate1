@@ -116,7 +116,7 @@
 
         <div class="video-overlay header-text">
             <div class="caption">
-                <h6>Lorem ipsum dolor sit amet</h6>
+                <h6>Say Hi! to your new Property in Gurgaon region</h6>
                 <h2>Find the perfect <em>Real Estate</em></h2>
                 <div class="main-button">
                     <a href="contact.html">Contact Us</a>
@@ -215,11 +215,11 @@
                         }
                         echo "</div>";
                         echo "<div class='down-content'>";
-                        echo "<span>";
-                        echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
-                        echo "</span>";
+                        // echo "<span>";
+                        // echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
+                        // echo "</span>";
                         echo "<h4>" . $row['name'] . "</h4>";
-                        echo "<p>" . $row['type'] . " &nbsp;/&nbsp; Latest &nbsp;/&nbsp;</p>";
+                        echo "<p>" . $row['type'] . " &nbsp;/&nbsp; Latest</p>";
                         echo "<ul class='social-icons'>";
                         echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
                         echo "</ul>";
@@ -261,16 +261,15 @@
                     <div class="section-heading dark-bg">
                         <h2>Read <em>About Us</em></h2>
                         <img src="assets/images/line-dec.png" alt="">
-                        <p>Nunc urna sem, laoreet ut metus id, aliquet consequat magna. Sed viverra ipsum dolor, ultricies fermentum massa consequat eu.</p>
+                        <p>Welcome to Gurgaon Properties, your trusted partner in finding the perfect property in Gurgaon. Experience exceptional service and expertise.</p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cta-content text-center">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore deleniti voluptas enim! Provident consectetur id earum ducimus facilis, aspernatur hic, alias, harum rerum velit voluptas, voluptate enim! Eos, sunt, quidem.</p>
+                        <p>Welcome to Gurgaon Properties, your trusted partner in navigating the dynamic real estate market of Gurgaon, India. With years of experience and a deep understanding of the local property landscape, we are committed to helping you find your dream home or the perfect investment opportunity. Our extensive portfolio includes a diverse range of residential, commercial, Industrial, and Agricultural properties, from luxurious apartments and villas to state-of-the-art office spaces and retail outlets. At Gurgaon Properties, we believe in providing personalized service tailored to meet your unique needs and preferences.</p>
 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto nulla quo cum officia laboriosam. Amet tempore, aliquid quia eius commodi, doloremque omnis delectus laudantium dolor reiciendis non nulla! Doloremque maxime quo eum in culpa mollitia similique eius doloribus voluptatem facilis! Voluptatibus, eligendi, illum. Distinctio, non!</p>
                     </div>
                 </div>
             </div>
@@ -300,7 +299,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="section-heading">
                     <h2>Read our <em>Blog</em></h2>
                     <img src="assets/images/line-dec.png" alt="">
-                    <p>Nunc urna sem, laoreet ut metus id, aliquet consequat magna. Sed viverra ipsum dolor, ultricies fermentum massa consequat eu.</p>
+                    <p>Discover the latest trends and insights in the real estate market with our blog. Stay informed on property investment tips, industry news, and expert advice tailored for Gurgaon, India.</p>
                 </div>
             </div>
         </div>
@@ -310,7 +309,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($blogs as $index => $blog): ?>
                         <li><a href='#tabs-<?php echo $index + 1; ?>'><?php echo htmlspecialchars($blog['title']); ?></a></li>
                     <?php endforeach; ?>
-                    <div class="main-rounded-button"><a href="blog.php">Read More</a></div>
+                    <div class="main-rounded-button"><a href="blog.html">Read More</a></div>
                 </ul>
             </div>
             <div class="col-lg-8">
@@ -319,7 +318,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <article id='tabs-<?php echo $index + 1; ?>'>
                             <img src="<?php echo htmlspecialchars($blog['image_path']); ?>" alt="" style="width:100%;">
                             <h4><?php echo htmlspecialchars($blog['title']); ?></h4>
-                            <p><i class="fa fa-user"></i> Admin &nbsp;|&nbsp; <i class="fa fa-calendar"></i> <?php echo date('d.m.Y H:i', strtotime($blog['published_at'])); ?> &nbsp;|&nbsp; <i class="fa fa-comments"></i> <?php echo $blog['comment_count']; ?> comments</p>
+                            <p><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> <?php echo date('d.m.Y H:i', strtotime($blog['published_at'])); ?> &nbsp;|&nbsp; <i class="fa fa-comments"></i> <?php echo $blog['comment_count']; ?> comments</p>
                             <p class="truncate-text"><?php echo htmlspecialchars($blog['paragraph1']); ?></p>
                             <div class="main-button">
                                 <a href="blog-details.php?id=<?php echo $blog['id']; ?>">Continue Reading</a>
@@ -332,6 +331,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </section>
 
+
     <!-- ***** Blog End ***** -->
 
     <!-- ***** Call to Action Start ***** -->
@@ -341,7 +341,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="col-lg-10 offset-lg-1">
                     <div class="cta-content">
                         <h2>Send us a <em>message</em></h2>
-                        <p>Ut consectetur, metus sit amet aliquet placerat, enim est ultricies ligula, sit amet dapibus odio augue eget libero. Morbi tempus mauris a nisi luctus imperdiet.</p>
+                        <p>Have questions or need assistance? Our team is here to help. Send us a message, and we'll get back to you as soon as possible. We value your inquiries and are dedicated to providing excellent customer support.</p>
                         <div class="main-button">
                             <a href="contact.html">Contact us</a>
                         </div>
@@ -360,7 +360,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="section-heading">
                         <h2>Read our <em>Testimonials</em></h2>
                         <img src="assets/images/line-dec.png" alt="waves">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem incidunt alias minima tenetur nemo necessitatibus?</p>
+                        <p>Read what our satisfied clients have to say about our services. Our commitment to excellence in real estate is reflected in their positive experiences and glowing testimonials. Your satisfaction is our priority.</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -371,7 +371,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="right-content">
                                 <h4>John Doe</h4>
-                                <p><em>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta numquam maxime voluptatibus, impedit sed! Necessitatibus repellendus sed deleniti id et!"</em></p>
+                                <p><em>"Amazing service! Found my dream home in Gurgaon with their help. The team was incredibly supportive and knowledgeable throughout the entire process. Highly recommend them for anyone looking to buy property in the area. Their expertise made the experience seamless and enjoyable."</em></p>
                             </div>
                         </li>
                         <li class="feature-item">
@@ -380,7 +380,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="right-content">
                                 <h4>John Doe</h4>
-                                <p><em>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta numquam maxime voluptatibus, impedit sed! Necessitatibus repellendus sed deleniti id et!"</em></p>
+                                <p><em>"Professional and reliable. They made the buying process smooth and stress-free. Every detail was handled with care, and their market insights were invaluable. We felt confident and well-informed at every step. Thank you for helping us find the perfect home!"</em></p>
                             </div>
                         </li>
                     </ul>
@@ -393,7 +393,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="right-content">
                                 <h4>John Doe</h4>
-                                <p><em>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta numquam maxime voluptatibus, impedit sed! Necessitatibus repellendus sed deleniti id et!"</em></p>
+                                <p><em>"Exceptional support and guidance throughout our home search. The team's dedication and personalized approach made all the difference. We felt understood and valued. Couldn't be happier with the service provided. Truly a top-notch real estate agency."</em></p>
                             </div>
                         </li>
                         <li class="feature-item">
@@ -402,7 +402,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                             <div class="right-content">
                                 <h4>John Doe</h4>
-                                <p><em>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta numquam maxime voluptatibus, impedit sed! Necessitatibus repellendus sed deleniti id et!"</em></p>
+                                <p><em>"Fantastic experience! They truly understand the market and customer needs. The team's attention to detail and commitment to client satisfaction was evident from start to finish. We found our ideal property thanks to their efforts. Highly recommend them for anyone in the market for a new home."</em></p>
                             </div>
                         </li>
                     </ul>
@@ -411,9 +411,9 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <br>
 
-            <div class="main-button text-center">
+            <!-- <div class="main-button text-center">
                 <a href="testimonials.html">Read More</a>
-            </div>
+            </div> -->
         </div>
     </section>
     <!-- ***** Testimonials Item End ***** -->
@@ -445,14 +445,16 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="assets/js/waypoints.min.js"></script>
     <script src="assets/js/jquery.counterup.min.js"></script>
     <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/mixitup.js"></script> 
-    <script src="assets/js/accordions.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="assets/js/mixitup.js"></script> 
+    <script src="assets/js/accordions.js"></script>
     
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
-    <script>
+
+    <!-- slider javascript function for news slider  -->
+<script>
             $(document).ready(function(){
                 $('.news-slider').slick({
                     slidesToShow: 1,
@@ -479,34 +481,37 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 });
             });
 </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const propertyContainer = document.getElementById('propertyContainer');
-        let offset = <?php echo isset($_GET['offset']) ? (int)$_GET['offset'] : 0; ?>;
-        const limit = 3;
 
-        loadMoreBtn.addEventListener('click', function () {
-            // Update offset
-            offset += limit;
+    <!-- load more button function for the properties cards section  -->
+<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const loadMoreBtn = document.getElementById('loadMoreBtn');
+                const propertyContainer = document.getElementById('propertyContainer');
+                let offset = <?php echo isset($_GET['offset']) ? (int)$_GET['offset'] : 0; ?>;
+                const limit = 3;
 
-            // Fetch more properties
-            fetch(`load-more.php?offset=${offset}`)
-                .then(response => response.text())
-                .then(data => {
-                    // Append new properties to the container
-                    propertyContainer.innerHTML += data;
+                loadMoreBtn.addEventListener('click', function () {
+                    // Update offset
+                    offset += limit;
 
-                    // Hide Load More button if there are no more properties
-                    if (data.trim() === '') {
-                        loadMoreBtn.style.display = 'none';
-                    }
-                })
-                .catch(error => console.error('Error fetching more properties:', error));
-        });
-    });
+                    // Fetch more properties
+                    fetch(`load-more.php?offset=${offset}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            // Append new properties to the container
+                            propertyContainer.innerHTML += data;
+
+                            // Hide Load More button if there are no more properties
+                            if (data.trim() === '') {
+                                loadMoreBtn.style.display = 'none';
+                            }
+                        })
+                        .catch(error => console.error('Error fetching more properties:', error));
+                });
+            });
 </script>
 
+     <!--javascript function for truncate the text for the blog section  -->
 <script>
     // Function to truncate text
     function truncateText() {
@@ -529,6 +534,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     window.onload = truncateText;
 </script>
 
+     <!-- javascript function for truncate text for the news slider  -->
 <script>
     // Function to truncate text
     function truncate() {
