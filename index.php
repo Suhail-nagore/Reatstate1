@@ -192,7 +192,7 @@
                 $totalProperties = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
                 $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
                 $limit = 6;
-                $sql = "SELECT p.id, p.name, p.type, MIN(pi.image_path) AS image_path 
+                $sql = "SELECT p.id, p.name, p.type,p.location, MIN(pi.image_path) AS image_path 
                         FROM properties p
                         LEFT JOIN property_images pi ON p.id = pi.property_id
                         GROUP BY p.id
@@ -219,7 +219,7 @@
                         // echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
                         // echo "</span>";
                         echo "<h4>" . $row['name'] . "</h4>";
-                        echo "<p>" . $row['type'] . " &nbsp;/&nbsp; Latest</p>";
+                        echo "<p>" . htmlspecialchars($row['type']) . " &nbsp;/&nbsp; " . htmlspecialchars($row['location']) . "</p>";
                         echo "<ul class='social-icons'>";
                         echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
                         echo "</ul>";

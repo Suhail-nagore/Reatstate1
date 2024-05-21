@@ -29,6 +29,10 @@
             <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
         </div>
         <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" class="form-control" id="location" name="location" required>
+        </div>
+        <div class="form-group">
             <label for="type">Type:</label>
             <select class="form-control" id="type" name="type" required>
                 <option value="Residential">Residential</option>

@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
     $name = $_POST['name'];
     $description = $_POST['description'];
+    $location = strtoupper($_POST['location']); // Convert location to uppercase
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $specifications = $_POST['specifications'];
@@ -25,9 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
 
         // Insert property details into properties table
-        $sql = "INSERT INTO properties (name, description, latitude, longitude, type) VALUES (?, ?, ?, ?,?)";
+        $sql = "INSERT INTO properties (name, description, location, latitude, longitude, type) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$name, $description, $latitude, $longitude, $type]);
+        $stmt->execute([$name, $description, $location, $latitude, $longitude, $type]);
         $propertyId = $pdo->lastInsertId();
 
         // Insert property specifications into property_specifications table

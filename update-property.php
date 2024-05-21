@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST['description'];
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
+    $location = strtoupper($_POST['location']); // Convert location to uppercase
     $specifications = $_POST['specifications'];
     $amenities = $_POST['amenities'];
     $type = $_POST['type']; // Get the type of property
@@ -40,6 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($longitude)) {
         $updateSql .= "longitude = ?, ";
         $updateParams[] = $longitude;
+    }
+
+    // Update location
+    if (!empty($location)) {
+        $updateSql .= "location = ?, ";
+        $updateParams[] = $location;
     }
 
     // Update type

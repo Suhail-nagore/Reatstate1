@@ -109,101 +109,135 @@
 
             <!-- Dropdown for property type filter -->
             <div class="row mb-3">
-                <div class="col-lg-4 offset-lg-4">
-                    <form action="properties.php" method="get" id="filterForm">
-                        <div class="input-group">
-                            <select class="form-control" name="type" id="type">
-                                <option value="all" <?php if(isset($_GET['type']) && $_GET['type'] == 'all') echo 'selected'; ?>>All</option>
-                                <option value="Residential" <?php if(isset($_GET['type']) && $_GET['type'] == 'Residential') echo 'selected'; ?>>Residential</option>
-                                <option value="Commercial" <?php if(isset($_GET['type']) && $_GET['type'] == 'Commercial') echo 'selected'; ?>>Commercial</option>
-                                <option value="Industrial" <?php if(isset($_GET['type']) && $_GET['type'] == 'Industrial') echo 'selected'; ?>>Industrial</option>
-                                <option value="Agricultural" <?php if(isset($_GET['type']) && $_GET['type'] == 'Agricultural') echo 'selected'; ?>>Agricultural</option>
-                            </select>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Filter Results</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div class="col-lg-4 offset-lg-4">
+        <form action="properties.php" method="get" id="filterForm">
+            <div class="input-group">
+                <select class="form-control" name="type" id="type">
+                    <option value="all" <?php if (isset($_GET['type']) && $_GET['type'] == 'all') echo 'selected'; ?>>All</option>
+                    <option value="Residential" <?php if (isset($_GET['type']) && $_GET['type'] == 'Residential') echo 'selected'; ?>>Residential</option>
+                    <option value="Commercial" <?php if (isset($_GET['type']) && $_GET['type'] == 'Commercial') echo 'selected'; ?>>Commercial</option>
+                    <option value="Industrial" <?php if (isset($_GET['type']) && $_GET['type'] == 'Industrial') echo 'selected'; ?>>Industrial</option>
+                    <option value="Agricultural" <?php if (isset($_GET['type']) && $_GET['type'] == 'Agricultural') echo 'selected'; ?>>Agricultural</option>
+                </select>
             </div>
 
-            <div class="row" id="propertyContainer">
-                <?php
-                // Include database connection
-                include 'db_connection.php';
+            <div class="input-group mt-3">
+                <select class="form-control" name="location" id="location">
+                    <option value="all" <?php if (isset($_GET['location']) && $_GET['location'] == 'all') echo 'selected'; ?>>All Locations</option>
+                    <?php
+                    include 'db_connection.php';
+                    // Fetch unique location values from the properties table in alphabetical order
+                    $locationQuery = "SELECT DISTINCT location FROM properties ORDER BY location ASC";
+                    $locationStmt = $pdo->prepare($locationQuery);
+                    $locationStmt->execute();
+                    $locations = $locationStmt->fetchAll(PDO::FETCH_COLUMN);
 
-                try {
-                    $typeFilter = isset($_GET['type']) ? $_GET['type'] : 'all';
-                    $limit = 12;
-                    $offset = 0;
+                    foreach ($locations as $location): ?>
+                        <option value="<?php echo htmlspecialchars($location); ?>" <?php if (isset($_GET['location']) && $_GET['location'] == $location) echo 'selected'; ?>>
+                            <?php echo htmlspecialchars($location); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-                    // Count total properties based on filter
-                    $countSql = "SELECT COUNT(*) AS total FROM properties";
-                    if ($typeFilter != 'all') {
-                        $countSql .= " WHERE type = :type";
-                    }
-                    $countStmt = $pdo->prepare($countSql);
-                    if ($typeFilter != 'all') {
-                        $countStmt->execute(['type' => $typeFilter]);
-                    } else {
-                        $countStmt->execute();
-                    }
-                    $totalProperties = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+            <div class="input-group-append mt-3">
+                <button class="btn btn-primary" type="submit">Filter Results</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-                    // Fetch properties based on filter
-                    $sql = "SELECT p.id, p.name,p.type, MIN(pi.image_path) AS image_path 
-                            FROM properties p
-                            LEFT JOIN property_images pi ON p.id = pi.property_id";
-                    if ($typeFilter != 'all') {
-                        $sql .= " WHERE p.type = :type";
-                    }
-                    $sql .= " GROUP BY p.id
-                              LIMIT :limit OFFSET :offset";
 
-                    $stmt = $pdo->prepare($sql);
-                    if ($typeFilter != 'all') {
-                        $stmt->bindParam(':type', $typeFilter, PDO::PARAM_STR);
-                    }
-                    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-                    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-                    $stmt->execute();
+<div class="row" id="propertyContainer">
+    <?php
+    // Include database connection
+    include 'db_connection.php';
 
-                    // Check if properties exist
-                    if ($stmt->rowCount() > 0) {
-                        // Output data of each row
-                        foreach ($stmt as $row) {
-                            echo "<div class='col-lg-4'>";
-                            echo "<div class='trainer-item'>";
-                            echo "<div class='image-thumb'>";
-                            if (!empty($row['image_path'])) {
-                                echo "<img src='" . $row['image_path'] . "' alt='Property Image'>";
-                            } else {
-                                echo "<img src='default_image.jpg' alt='Property Image'>";
-                            }
-                            echo "</div>";
-                            echo "<div class='down-content'>";
-                            // echo "<span>";
-                            // echo "<del><sup>$</sup>80 000</del>  <sup>$</sup>70 000";
-                            // echo "</span>";
-                            echo "<h4>" . $row['name'] . "</h4>";
-                            echo "<p>" . $row['type'] . " &nbsp;/&nbsp; Latest</p>";
-                            echo "<ul class='social-icons'>";
-                            echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
-                            echo "</ul>";
-                            echo "</div>";
-                            echo "</div>";
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "<div class='col-lg-12'>";
-                        echo "<p>No properties found.</p>";
-                        echo "</div>";
-                    }
-                } catch (PDOException $e) {
-                    echo "Error: " . $e->getMessage();
+    try {
+        $typeFilter = isset($_GET['type']) ? $_GET['type'] : 'all';
+        $locationFilter = isset($_GET['location']) ? $_GET['location'] : 'all';
+        $limit = 12;
+        $offset = 0;
+
+        // Build the SQL query based on filters
+        $sql = "SELECT p.id, p.name, p.type, p.location, MIN(pi.image_path) AS image_path 
+                FROM properties p
+                LEFT JOIN property_images pi ON p.id = pi.property_id 
+                WHERE 1=1";
+
+        $countSql = "SELECT COUNT(*) AS total FROM properties WHERE 1=1";
+
+        if ($typeFilter != 'all') {
+            $sql .= " AND p.type = :type";
+            $countSql .= " AND type = :type";
+        }
+
+        if ($locationFilter != 'all') {
+            $sql .= " AND p.location = :location";
+            $countSql .= " AND location = :location";
+        }
+
+        $sql .= " GROUP BY p.id
+                  LIMIT :limit OFFSET :offset";
+
+        $stmt = $pdo->prepare($sql);
+        $countStmt = $pdo->prepare($countSql);
+
+        // Bind parameters
+        if ($typeFilter != 'all') {
+            $stmt->bindParam(':type', $typeFilter, PDO::PARAM_STR);
+            $countStmt->bindParam(':type', $typeFilter, PDO::PARAM_STR);
+        }
+
+        if ($locationFilter != 'all') {
+            $stmt->bindParam(':location', $locationFilter, PDO::PARAM_STR);
+            $countStmt->bindParam(':location', $locationFilter, PDO::PARAM_STR);
+        }
+
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $countStmt->execute();
+
+        // Fetch total properties count
+        $totalProperties = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // Check if properties exist
+        if ($stmt->rowCount() > 0) {
+            // Output data of each row
+            foreach ($stmt as $row) {
+                echo "<div class='col-lg-4'>";
+                echo "<div class='trainer-item'>";
+                echo "<div class='image-thumb'>";
+                if (!empty($row['image_path'])) {
+                    echo "<img src='" . htmlspecialchars($row['image_path']) . "' alt='Property Image'>";
+                } else {
+                    echo "<img src='default_image.jpg' alt='Property Image'>";
                 }
-                ?>
-            </div>
+                echo "</div>";
+                echo "<div class='down-content'>";
+                echo "<h4>" . htmlspecialchars($row['name']) . "</h4>";
+                echo "<p>" . htmlspecialchars($row['type']) . " &nbsp;/&nbsp; " . htmlspecialchars($row['location']) . "</p>";
+                echo "<ul class='social-icons'>";
+                echo "<li><a href='property-details.php?id=" . $row['id'] . "'>+ View More</a></li>";
+                echo "</ul>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+            }
+        } else {
+            echo "<div class='col-lg-12'>";
+            echo "<p>No properties found.</p>";
+            echo "</div>";
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+    ?>
+</div>
+
+
 
             <br>
 
@@ -246,7 +280,7 @@
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
 
-    <script>
+    <!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
         const propertyContainer = document.getElementById('propertyContainer');
@@ -268,6 +302,34 @@
                 .catch(error => console.error('Error fetching more properties:', error));
         });
     });
+    </script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const propertyContainer = document.getElementById('propertyContainer');
+    let offset = 12; // Initially, 12 properties are loaded
+    const limit = 3;
+
+    loadMoreBtn.addEventListener('click', function () {
+        const type = document.getElementById('type').value;
+        const location = document.getElementById('location').value;
+
+        const query = new URLSearchParams({ offset, type, location });
+
+        fetch(`load-more.php?${query.toString()}`)
+            .then(response => response.text())
+            .then(data => {
+                propertyContainer.innerHTML += data;
+                offset += limit;
+
+                if (data.trim() === '') {
+                    loadMoreBtn.style.display = 'none';
+                }
+            })
+            .catch(error => console.error('Error fetching more properties:', error));
+    });
+});
+
     </script>
 </body>
 

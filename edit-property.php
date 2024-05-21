@@ -19,6 +19,7 @@ if (isset($_GET['id'])) {
         $latitude = $property['latitude'];
         $longitude = $property['longitude'];
         $type = $property['type']; // Fetch the property type
+        $location = $property['location']; // Fetch the property location
 
         // Fetch specifications for the property
         $sql = "SELECT specification FROM property_specifications WHERE property_id = :property_id";
@@ -49,7 +50,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,6 +79,10 @@ if (isset($_GET['id'])) {
         <div class="form-group">
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" rows="5" required><?php echo isset($description) ? htmlspecialchars($description) : ''; ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" class="form-control" id="location" name="location" value="<?php echo isset($location) ? htmlspecialchars($location) : ''; ?>" required>
         </div>
         <div class="form-group">
             <label for="latitude">Latitude:</label>
