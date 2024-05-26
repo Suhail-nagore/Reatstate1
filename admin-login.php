@@ -7,8 +7,8 @@ if(isset($_SESSION['username'])) {
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate credentials
-    $admin_username = "admin"; // Admin username
-    $admin_password = "123456"; // Admin password
+    $admin_username = "Admin@best4U"; // Admin username
+    $admin_password = "Admin@223!"; // Admin password
 
     if($_POST['username'] == $admin_username && $_POST['password'] == $admin_password) {
         $_SESSION['username'] = $_POST['username'];

@@ -370,7 +370,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="assets/images/features-first-icon.png" alt="First One">
                             </div>
                             <div class="right-content">
-                                <h4>John Doe</h4>
+                                <h4>Rishabh Aggrawal</h4>
                                 <p><em>"Amazing service! Found my dream home in Gurgaon with their help. The team was incredibly supportive and knowledgeable throughout the entire process. Highly recommend them for anyone looking to buy property in the area. Their expertise made the experience seamless and enjoyable."</em></p>
                             </div>
                         </li>
@@ -379,7 +379,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="assets/images/features-first-icon.png" alt="second one">
                             </div>
                             <div class="right-content">
-                                <h4>John Doe</h4>
+                                <h4>Himanshu Singh</h4>
                                 <p><em>"Professional and reliable. They made the buying process smooth and stress-free. Every detail was handled with care, and their market insights were invaluable. We felt confident and well-informed at every step. Thank you for helping us find the perfect home!"</em></p>
                             </div>
                         </li>
@@ -392,7 +392,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="assets/images/features-first-icon.png" alt="fourth muscle">
                             </div>
                             <div class="right-content">
-                                <h4>John Doe</h4>
+                                <h4>Aditya Gupta</h4>
                                 <p><em>"Exceptional support and guidance throughout our home search. The team's dedication and personalized approach made all the difference. We felt understood and valued. Couldn't be happier with the service provided. Truly a top-notch real estate agency."</em></p>
                             </div>
                         </li>
@@ -401,7 +401,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="assets/images/features-first-icon.png" alt="training fifth">
                             </div>
                             <div class="right-content">
-                                <h4>John Doe</h4>
+                                <h4>Sarthak Kumar</h4>
                                 <p><em>"Fantastic experience! They truly understand the market and customer needs. The team's attention to detail and commitment to client satisfaction was evident from start to finish. We found our ideal property thanks to their efforts. Highly recommend them for anyone in the market for a new home."</em></p>
                             </div>
                         </li>
@@ -424,7 +424,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="row">
                 <div class="col-lg-12">
                     <p>
-                        Copyright © 2020 Company Name
+                        Copyright © 2020 Gurgaon Properties
                         
                     </p>
                     <p><a href="admin-login.php">Admin</a></p>

@@ -27,7 +27,8 @@ if(!isset($_SESSION['username'])) {
                             <a href="manage-properties.php" class="btn btn-primary mb-3">Manage Properties</a> <br>
                             <a href="manage-blogs.php" class="btn btn-primary mb-3">Manage Blogs</a> <br>
                             <a href="manage-news.php" class="btn btn-primary mb-3">Manage News</a> <br>
-                            <a href="index.php" class="btn btn-danger mb-3">Homepage</a>
+                            <a href="index.php" class="btn btn-secondary mb-3">Homepage</a> <br>
+                            <a href="logout.php" class="btn btn-danger mb3">Logout</a>
                         </div>
                     </div>
                 </div>

@@ -104,7 +104,7 @@ if (!$news) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright © 2020 Company Name</p>
+                    <p>Copyright © 2020 Gurgaon Properties</p>
                 </div>
             </div>
         </div>
