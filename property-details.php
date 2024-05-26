@@ -101,7 +101,7 @@ if (isset($_GET['id'])) {
               <div class="col-12">
                   <nav class="main-nav">
                       <!-- ** Logo Start ** -->
-                      <a href="index.php" class="logo" style="color: white; font-size: 24px;">Real Estate<em> Website</em></a>
+                      <a href="index.php" class="logo" style="color: white; font-size: 24px;">Gurgaon<em> Properties</em></a>
                       <!-- ** Logo End ** -->
                       <!-- ** Menu Start ** -->
                       <ul class="nav" style="color: white; font-size: 18px;">
